@@ -55,7 +55,6 @@ def process_meeting(
     hf_token_input: str,
     output_formats: list,
     num_speakers: int,
-    progress=gr.Progress(track_tqdm=True),
 ):
     """
     Main processing pipeline.
@@ -321,7 +320,7 @@ with gr.Blocks(
         fn=process_meeting,
         inputs=[audio_input, hf_token_input, format_checkboxes, num_speakers_input],
         outputs=[transcript_output, summary_output, action_plan_output, files_output, status_output],
-        show_progress="full",
+        show_progress=True,
     )
 
 
