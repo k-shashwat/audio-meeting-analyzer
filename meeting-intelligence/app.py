@@ -276,7 +276,6 @@ with gr.Blocks(
                         lines=20,
                         interactive=False,
                         placeholder="Transcript with speaker labels and timestamps will appear here...",
-                        show_copy_button=True,
                     )
 
                 with gr.Tab("📋 Summary"):
@@ -285,7 +284,6 @@ with gr.Blocks(
                         lines=10,
                         interactive=False,
                         placeholder="AI-generated summary will appear here...",
-                        show_copy_button=True,
                     )
 
                 with gr.Tab("✅ Action Plan"):
@@ -294,7 +292,6 @@ with gr.Blocks(
                         lines=10,
                         interactive=False,
                         placeholder="Extracted action items will appear here...",
-                        show_copy_button=True,
                     )
 
                 with gr.Tab("💾 Downloads"):
