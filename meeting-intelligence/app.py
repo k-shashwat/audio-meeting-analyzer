@@ -80,7 +80,7 @@ def process_meeting(
     if not output_formats:
         output_formats = ["Markdown", "JSON", "PDF", "Plain Text"]
 
-    audio_path = audio_file if isinstance(audio_file, str) else audio_file.name
+    audio_path = audio_file.name if hasattr(audio_file, "name") else str(audio_file)
     wav_path = None
 
     try:
@@ -225,7 +225,7 @@ with gr.Blocks(
             audio_input = gr.File(
                 label="Upload Audio File",
                 file_types=[".m4a", ".mp3", ".mpeg", ".wav", ".mp4"],
-                type="filepath",
+                type="file",
             )
 
             hf_token_input = gr.Textbox(
