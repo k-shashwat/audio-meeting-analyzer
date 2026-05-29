@@ -2,8 +2,8 @@ faster-whisper>=1.0.0
 pyannote.audio>=3.1.0
 torch>=2.0.0
 torchaudio>=2.0.0
-gradio>=4.0.0
-ollama
+gradio==3.50.2
+requests
 requests
 reportlab>=4.0.0
 python-dotenv
