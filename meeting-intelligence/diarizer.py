@@ -36,9 +36,11 @@ def diarize(audio_path: str, hf_token: str, num_speakers: int = None) -> list[di
         )
 
     logger.info("Loading pyannote speaker diarization pipeline")
+    import os
+    os.environ["HUGGING_FACE_HUB_TOKEN"] = hf_token
+    os.environ["HF_TOKEN"] = hf_token
     pipeline = Pipeline.from_pretrained(
         "pyannote/speaker-diarization-3.1",
-        token=hf_token,
     )
 
     # Use CPU
