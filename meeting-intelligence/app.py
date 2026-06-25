@@ -42,7 +42,13 @@ def _convert_to_wav(audio_path: str) -> str:
         tmp_wav.name,
     ]
     logger.info(f"Converting audio to WAV: {' '.join(cmd)}")
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+    except FileNotFoundError:
+        raise RuntimeError(
+            "ffmpeg is not installed or not found in PATH. "
+            "Install ffmpeg: brew install ffmpeg (macOS) or apt install ffmpeg (Linux)"
+        )
     if result.returncode != 0:
         raise RuntimeError(
             f"ffmpeg conversion failed:\n{result.stderr}"
@@ -80,7 +86,14 @@ def process_meeting(
     if not output_formats:
         output_formats = ["Markdown", "JSON", "PDF", "Plain Text"]
 
-    audio_path = audio_file.name if hasattr(audio_file, "name") else str(audio_file)
+    # Resolve audio path: Gradio 3.x type="file" returns a filepath string,
+    # but some versions/backends return an object with .name attribute
+    if isinstance(audio_file, str):
+        audio_path = audio_file
+    elif hasattr(audio_file, "name"):
+        audio_path = audio_file.name
+    else:
+        audio_path = str(audio_file)
     wav_path = None
 
     try:

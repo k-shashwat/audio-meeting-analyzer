@@ -46,12 +46,18 @@ def transcribe(audio_path: str, language: str = None) -> list[dict]:
         vad_parameters={"min_silence_duration_ms": 500},
     )
 
+    detected_lang = getattr(info, "language", None) or "unknown"
+    detected_prob = getattr(info, "language_probability", None) or 0.0
     logger.info(
-        f"Detected language: {info.language} (probability={info.language_probability:.2f})"
+        f"Detected language: {detected_lang} (probability={detected_prob:.2f})"
     )
 
     segments = []
+    segment_count = 0
     for seg in segments_iter:
+        segment_count += 1
+        if segment_count % 10 == 0:
+            logger.info(f"Transcription progress: {segment_count} segments processed...")
         words = []
         if seg.words:
             for w in seg.words:
@@ -72,4 +78,10 @@ def transcribe(audio_path: str, language: str = None) -> list[dict]:
         )
 
     logger.info(f"Transcription complete: {len(segments)} segments")
+
+    # Free model memory
+    import gc
+    del model
+    gc.collect()
+
     return segments

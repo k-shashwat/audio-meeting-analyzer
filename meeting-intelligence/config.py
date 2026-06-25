@@ -1,7 +1,12 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+# Try .env in project root first, then in the meeting-intelligence directory
+env_path = Path(__file__).resolve().parent.parent / ".env"
+if not env_path.exists():
+    env_path = Path(__file__).resolve().parent / ".env"
+load_dotenv(env_path)
 
 # Whisper settings
 WHISPER_MODEL = "large-v3"

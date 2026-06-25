@@ -4,8 +4,6 @@ torch>=2.0.0
 torchaudio>=2.0.0
 gradio==3.50.2
 requests
-requests
 reportlab>=4.0.0
 python-dotenv
 numpy
-pydub

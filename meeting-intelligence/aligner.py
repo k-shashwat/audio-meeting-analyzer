@@ -199,10 +199,14 @@ def format_fireflies_transcript(aligned: dict) -> str:
     Bold lines = new speaker turn with timestamp
     Plain bracket lines = sentence-level timestamps within same speaker turn
     """
+    turns = aligned.get("speaker_turns", [])
+    if not turns:
+        logger.warning("No speaker turns to format")
+        return ""
+
     lines = []
-    for turn in aligned["speaker_turns"]:
-        # First sentence of each speaker turn is bold with speaker label
-        sentences = turn["sentences"]
+    for turn in turns:
+        sentences = turn.get("sentences", [])
         if not sentences:
             continue
 

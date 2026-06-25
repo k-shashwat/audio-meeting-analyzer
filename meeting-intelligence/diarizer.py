@@ -36,23 +36,21 @@ def diarize(audio_path: str, hf_token: str, num_speakers: int = None) -> list[di
         )
 
     logger.info("Loading pyannote speaker diarization pipeline")
-    import os
-    os.environ["HUGGING_FACE_HUB_TOKEN"] = hf_token
-    os.environ["HF_TOKEN"] = hf_token
     pipeline = Pipeline.from_pretrained(
         "pyannote/speaker-diarization-3.1",
+        use_auth_token=hf_token,
     )
 
     # Use CPU
     pipeline.to(torch.device("cpu"))
 
-    logger.info(f"Diarizing {audio_path} (num_speakers={num_speakers})")
-
-    kwargs = {}
     if num_speakers and num_speakers > 0:
-        kwargs["num_speakers"] = num_speakers
+        logger.info(f"Setting num_speakers hint to {num_speakers}")
+        pipeline = pipeline.instantiate({"num_speakers": num_speakers})
 
-    diarization = pipeline(audio_path, **kwargs)
+    logger.info(f"Diarizing {audio_path}")
+
+    diarization = pipeline(audio_path)
 
     turns = []
     for turn, _, speaker in diarization.itertracks(yield_label=True):
