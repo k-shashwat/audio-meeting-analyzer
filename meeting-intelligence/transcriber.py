@@ -56,8 +56,8 @@ def transcribe(audio_path: str, language: str = None) -> list[dict]:
     segment_count = 0
     for seg in segments_iter:
         segment_count += 1
-        if segment_count % 10 == 0:
-            logger.info(f"Transcription progress: {segment_count} segments processed...")
+        text = seg.text.strip()
+        logger.info(f"[{seg.start:.1f}s - {seg.end:.1f}s] {text}")
         words = []
         if seg.words:
             for w in seg.words:
@@ -72,7 +72,7 @@ def transcribe(audio_path: str, language: str = None) -> list[dict]:
             {
                 "start": seg.start,
                 "end": seg.end,
-                "text": seg.text.strip(),
+                "text": text,
                 "words": words,
             }
         )

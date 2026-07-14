@@ -14,9 +14,15 @@ import gradio as gr
 
 import config
 
+LOG_FILE = Path(__file__).resolve().parent.parent / "transcription.log"
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(str(LOG_FILE)),
+    ],
 )
 logger = logging.getLogger(__name__)
 
@@ -337,7 +343,7 @@ with gr.Blocks(
 if __name__ == "__main__":
     demo.queue()
     demo.launch(
-        server_name="127.0.0.1",
+        server_name="0.0.0.0",
         server_port=7860,
         share=False,
         show_error=True,

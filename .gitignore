@@ -3,3 +3,13 @@ __pycache__/
 *.pyc
 .DS_Store
 .env
+*.m4a
+*.mp3
+*.mp4
+*.wav
+*.mpeg
+*.flac
+*.ogg
+*.aac
+outputs/
+transcription.log
